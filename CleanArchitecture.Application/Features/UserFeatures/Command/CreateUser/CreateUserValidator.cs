@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.Application.Features.UserFeatures.Command.Create
 {
-    public class CreateHandler
+    public class CreateUserValidator
     {
     }
 }

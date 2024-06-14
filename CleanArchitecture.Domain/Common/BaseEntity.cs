@@ -1,8 +1,10 @@
-﻿namespace CleanArchitecture.Domain.Common
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CleanArchitecture.Domain.Common
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : IBaseEntity
     {
-        public int id { get; set; }
+        public virtual int id { get; set; }
         public bool? is_deleted { get; set; }
         public DateTimeOffset? created_date { get; set; }
         public string created_by { get; set; }

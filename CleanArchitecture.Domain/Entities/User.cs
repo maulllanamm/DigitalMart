@@ -1,9 +1,14 @@
 ﻿using CleanArchitecture.Domain.Common;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CleanArchitecture.Domain.Entities
 {
-    public sealed class User : BaseEntity
+    public class User : BaseEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public override int id { get; set; }
         public string username { get; set; }
         public string password_salt { get; set; }
         public string password_hash { get; set; }

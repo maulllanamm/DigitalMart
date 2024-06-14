@@ -15,6 +15,7 @@ namespace CleanArchitecture.Persistence
             services.AddDbContext<DataContext>(opt => opt.UseNpgsql(connectionString));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace CleanArchitecture.Persistence.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IBaseEntity
     {
-        private readonly DataContext _context;
+        protected readonly DataContext _context;
 
         public BaseRepository(DataContext context)
         {
