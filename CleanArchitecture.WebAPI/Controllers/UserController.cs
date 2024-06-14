@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
@@ -14,5 +15,13 @@ namespace CleanArchitecture.WebAPI.Controllers
             _mediator = mediator;
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult<CreateResponse>> Create(CreateRequest request,
+           CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
+        }
     }
 }
