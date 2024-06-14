@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Domain.Common;
 
-namespace CleanArchitecture.Application.Repositories.Interface
+namespace CleanArchitecture.Application.Repositories
 {
     public interface IBaseRepository<TEntity> where TEntity : class, IBaseEntity
     {

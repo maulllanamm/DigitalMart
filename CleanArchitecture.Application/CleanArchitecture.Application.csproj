@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Exceptions\" />
+    <Folder Include="Common\Behaviors\" />
+    <Folder Include="Features\UserFeatures\Command\Create\" />
+    <Folder Include="Features\UserFeatures\Query\" />
+    <Folder Include="Features\UserFeatures\Query\GetAll\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
