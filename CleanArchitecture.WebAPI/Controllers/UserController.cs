@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
+using CleanArchitecture.Application.Common.Behaviors;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
@@ -20,8 +21,24 @@ namespace CleanArchitecture.WebAPI.Controllers
         public async Task<ActionResult<CreateUserResponse>> Create(CreateUserRequest request,
            CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request, cancellationToken);
-            return Ok(response);
+            try
+            {
+                // Lakukan validasi menggunakan MediatR dan Validators
+                var result = await _mediator.Send(request, cancellationToken);
+
+                // Jika berhasil, kirim respon yang sesuai
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
+                return BadRequest(new { errors = ex.Errors });
+            }
+            catch (Exception ex)
+            {
+                // Kembalikan respons 500 Internal Server Error ke klien
+                return StatusCode(500, "An unexpected error occurred. Please try again later.");
+            }
         }
     }
 }
