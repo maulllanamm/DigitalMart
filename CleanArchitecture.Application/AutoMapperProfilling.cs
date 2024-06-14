@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
+using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application
@@ -14,6 +15,9 @@ namespace CleanArchitecture.Application
 
             CreateMap<CreateUserRequest, User>();
             CreateMap<User, CreateUserResponse>();
+
+            CreateMap<GetAllUserRequest, User>();
+            CreateMap<User, GetAllUserResponse>();
         }
     }
 }

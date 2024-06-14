@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
 using CleanArchitecture.Application.Common.Behaviors;
+using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
@@ -16,6 +17,28 @@ namespace CleanArchitecture.WebAPI.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<GetAllUserResponse>> GetAll(CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Lakukan validasi menggunakan MediatR dan Validators
+                var result = await _mediator.Send(new GetAllUserRequest(), cancellationToken);
+
+                // Jika berhasil, kirim respon yang sesuai
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
+                return BadRequest(new { errors = ex.Errors });
+            }
+            catch (Exception ex)
+            {
+                // Kembalikan respons 500 public Server Error ke klien
+                return StatusCode(500, "An unexpected error occurred. Please try again later.");
+            }
+        }
 
         [HttpPost]
         public async Task<ActionResult<CreateUserResponse>> Create(CreateUserRequest request,
@@ -36,7 +59,7 @@ namespace CleanArchitecture.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                // Kembalikan respons 500 Internal Server Error ke klien
+                // Kembalikan respons 500 public Server Error ke klien
                 return StatusCode(500, "An unexpected error occurred. Please try again later.");
             }
         }

@@ -11,10 +11,30 @@ namespace CleanArchitecture.Persistence.Repositories
         {
         }
 
+        public async Task<List<User>> GetAll()
+        {
+            try
+            {
+                var res =  await base.GetAll();
+                return res;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<User> Create(User user)
         {
-            var res = await base.Create(user);
-            return res;
+            try
+            {
+                var res = await base.Create(user);
+                return res;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

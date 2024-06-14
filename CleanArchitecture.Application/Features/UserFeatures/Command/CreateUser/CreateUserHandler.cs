@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CleanArchitecture.Application.Features.PasswordHelperFeatures;
+using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Application.Repositories;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
@@ -25,15 +26,26 @@ namespace CleanArchitecture.Application.Features.UserFeatures.Command.Create
 
         public async Task<CreateUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
         {
-            var passwordSalt = _passwordHelper.GenerateSalt();
-            var passwordHash = _passwordHelper.ComputeHash(request.Password, passwordSalt, _papper, _iteration);
+            try
+            {
+                var user = _mapper.Map<User>(request);
 
-            var user = _mapper.Map<User>(request);
-            user.password_salt = passwordSalt;
-            user.password_hash = passwordHash;
+                // Generate salt and compute hash
+                var passwordSalt = _passwordHelper.GenerateSalt();
+                var passwordHash = _passwordHelper.ComputeHash(request.Password, passwordSalt, _papper, _iteration);
 
-            var res = await _userRepository.Create(user);
-            return _mapper.Map<CreateUserResponse>(res);
+                // Set password hash and salt
+                user.password_salt = passwordSalt;
+                user.password_hash = passwordHash;
+
+                var res = await _userRepository.Create(user);
+                return _mapper.Map<CreateUserResponse>(res);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

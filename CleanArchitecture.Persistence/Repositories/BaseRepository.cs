@@ -32,12 +32,12 @@ namespace CleanArchitecture.Persistence.Repositories
 
         public async Task<List<TEntity>> GetAll()
         {
-            return _context.Set<TEntity>().ToList();
+            return await _context.Set<TEntity>().ToListAsync();
         }
 
         public async Task<List<TEntity>> GetByListId(List<int> listId)
         {
-            return _context.Set<TEntity>().Where(e => listId.Contains(e.id)).ToList();
+            return await _context.Set<TEntity>().Where(e => listId.Contains(e.id)).ToListAsync();
         }
 
         public async Task<List<TEntity>> GetByListProperty(string field, string[] values)

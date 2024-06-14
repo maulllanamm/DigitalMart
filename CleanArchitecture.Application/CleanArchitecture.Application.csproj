@@ -8,8 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Exceptions\" />
-    <Folder Include="Features\UserFeatures\Query\" />
-    <Folder Include="Features\UserFeatures\Query\GetAll\" />
   </ItemGroup>
 
   <ItemGroup>
