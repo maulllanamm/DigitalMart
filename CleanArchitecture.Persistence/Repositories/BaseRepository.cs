@@ -187,7 +187,7 @@ namespace CleanArchitecture.Persistence.Repositories
             return entities.Count();
         }
 
-        public async Task<int> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             var entityToDelete = _context.Set<TEntity>().FirstOrDefault(e => e.id == id);
             if (entityToDelete != null)
@@ -200,6 +200,7 @@ namespace CleanArchitecture.Persistence.Repositories
                         _context.Set<TEntity>().Remove(entityToDelete);
                         await _context.SaveChangesAsync(); // Simpan perubahan ke database
                         unitOfWork.Commit();
+                        return true;
                     }
                     catch (Exception)
                     {
@@ -208,8 +209,11 @@ namespace CleanArchitecture.Persistence.Repositories
                     }
                 }
             }
+            else
+            {
+                return false;
+            }
 
-            return id;
         }
 
         public async Task<int> DeleteBulk(List<TEntity> entities)

@@ -4,6 +4,8 @@ using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
 using CleanArchitecture.Application.Common.Behaviors;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
+using CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser;
+using Azure.Core;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
@@ -73,6 +75,35 @@ namespace CleanArchitecture.WebAPI.Controllers
             {
                 // Lakukan validasi menggunakan MediatR dan Validators
                 var result = await _mediator.Send(request, cancellationToken);
+
+                // Jika berhasil, kirim respon yang sesuai
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
+                return BadRequest(new { errors = ex.Errors });
+            }
+            catch (Exception ex)
+            {
+                // Kembalikan respons 500 public Server Error ke klien
+                return StatusCode(500, "An unexpected error occurred. Please try again later.");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<DeleteUserRequest>> Delete(int id,
+           CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Lakukan validasi menggunakan MediatR dan Validators
+                var result = await _mediator.Send(new DeleteUserRequest(id), cancellationToken);
+
+                if (!result)
+                {
+                    return NotFound(result);
+                }
 
                 // Jika berhasil, kirim respon yang sesuai
                 return Ok(result);

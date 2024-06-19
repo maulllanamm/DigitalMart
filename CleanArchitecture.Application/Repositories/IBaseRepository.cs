@@ -6,7 +6,7 @@ namespace CleanArchitecture.Application.Repositories
     {
         Task<TEntity> Create(TEntity entity);
         Task<int> CreateBulk(List<TEntity> entites);
-        Task<int> Delete(int id);
+        Task<bool> Delete(int id);
         Task<int> DeleteBulk(List<TEntity> entites);
         Task<int> SoftDelete(int id);
         Task<int> SoftDeleteBulk(List<int> entitesId);
