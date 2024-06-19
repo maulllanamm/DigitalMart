@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Repositories;
+﻿using CleanArchitecture.Application.Common.Behaviors;
+using CleanArchitecture.Application.Repositories;
 using MediatR;
 
 namespace CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser
@@ -13,13 +14,21 @@ namespace CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser
 
         public async Task<bool> Handle(DeleteUserRequest request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetById(request.id);
-            if (user == null)
+            try
             {
-                return false;
-            }
+                var user = await _userRepository.GetById(request.id);
+                if (user == null)
+                {
+                    throw new NotFoundException();
+                }
 
-            return await _userRepository.Delete(request.id);
+                return await _userRepository.Delete(request.id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

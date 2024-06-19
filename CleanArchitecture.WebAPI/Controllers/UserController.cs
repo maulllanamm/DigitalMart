@@ -6,6 +6,7 @@ using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
 using CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser;
 using Azure.Core;
+using CleanArchitecture.Application.Features.UserFeatures.Query.GetById;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
@@ -35,6 +36,39 @@ namespace CleanArchitecture.WebAPI.Controllers
             {
                 // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
                 return BadRequest(new { errors = ex.Errors });
+            }
+            catch (NotFoundException ex)
+            {
+                // Jika tidak ada
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                // Kembalikan respons 500 public Server Error ke klien
+                return StatusCode(500, "An unexpected error occurred. Please try again later.");
+            }
+        }
+
+        [HttpGet("id")]
+        public async Task<ActionResult<GetByIdUserResponse>> GetById(int id, CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Lakukan validasi menggunakan MediatR dan Validators
+                var result = await _mediator.Send(new GetByIdUserRequest(id), cancellationToken);
+
+                // Jika berhasil, kirim respon yang sesuai
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
+                return BadRequest(new { errors = ex.Errors });
+            }
+            catch (NotFoundException ex)
+            {
+                // Jika id tidak ada
+                return NotFound();
             }
             catch (Exception ex)
             {
@@ -84,6 +118,11 @@ namespace CleanArchitecture.WebAPI.Controllers
                 // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
                 return BadRequest(new { errors = ex.Errors });
             }
+            catch (NotFoundException ex)
+            {
+                // Jika tidak ada
+                return NotFound();
+            }
             catch (Exception ex)
             {
                 // Kembalikan respons 500 public Server Error ke klien
@@ -91,7 +130,7 @@ namespace CleanArchitecture.WebAPI.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("id")]
         public async Task<ActionResult<DeleteUserRequest>> Delete(int id,
            CancellationToken cancellationToken)
         {
@@ -100,11 +139,6 @@ namespace CleanArchitecture.WebAPI.Controllers
                 // Lakukan validasi menggunakan MediatR dan Validators
                 var result = await _mediator.Send(new DeleteUserRequest(id), cancellationToken);
 
-                if (!result)
-                {
-                    return NotFound(result);
-                }
-
                 // Jika berhasil, kirim respon yang sesuai
                 return Ok(result);
             }
@@ -112,6 +146,11 @@ namespace CleanArchitecture.WebAPI.Controllers
             {
                 // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
                 return BadRequest(new { errors = ex.Errors });
+            }
+            catch (NotFoundException ex)
+            {
+                // Jika tidak ada
+                return NotFound();
             }
             catch (Exception ex)
             {
