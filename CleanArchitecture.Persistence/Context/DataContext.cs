@@ -11,6 +11,7 @@ namespace CleanArchitecture.Persistence.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,6 +19,20 @@ namespace CleanArchitecture.Persistence.Context
             modelBuilder.Entity<User>().ToTable("users");
             modelBuilder.Entity<Role>().ToTable("roles");
             modelBuilder.Entity<Permission>().ToTable("permissions");
+            modelBuilder.Entity<RolePermission>().ToTable("role_permissions");
+
+            modelBuilder.Entity<RolePermission>()
+            .HasKey(rp => new { rp.role_id, rp.permission_id });
+
+            modelBuilder.Entity<RolePermission>()
+                .HasOne(rp => rp.role)
+                .WithMany(r => r.role_permissions)
+                .HasForeignKey(rp => rp.role_id);
+
+            modelBuilder.Entity<RolePermission>()
+                .HasOne(rp => rp.permission)
+                .WithMany(p => p.role_permissions)
+                .HasForeignKey(rp => rp.permission_id);
 
             // Daftar entitas yang ingin dikonfigurasi
             var entities = new[] { typeof(User)};
