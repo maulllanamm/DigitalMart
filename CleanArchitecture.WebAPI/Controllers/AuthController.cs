@@ -41,7 +41,7 @@ namespace CleanArchitecture.WebAPI.Controllers
             catch (NotFoundException ex)
             {
                 // Jika tidak ada
-                return NotFound();
+                return NotFound(new { errors = ex.Message });
             }
             catch (Exception ex)
             {
@@ -72,7 +72,7 @@ namespace CleanArchitecture.WebAPI.Controllers
             catch (NotFoundException ex)
             {
                 // Jika tidak ada
-                return NotFound();
+                return NotFound(new { errors = ex.Message });
             }
             catch (Exception ex)
             {

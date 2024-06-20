@@ -2,13 +2,10 @@
 {
     public class NotFoundException : Exception
     {
-        public string[] Errors { get; set; }
-        public NotFoundException(string message) : base(message)
+        public string Message { get; set; }
+        public NotFoundException(string message) : base("Not Found.")
         {
-        }
-        public NotFoundException(string[] errors) : base("Not Found.")
-        {
-            Errors = errors;
+            Message = message;
         }
     }
 }
