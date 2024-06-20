@@ -6,7 +6,7 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures
 {
-    public sealed class LoginHandler : IRequestHandler<LoginRequest, bool>
+    public sealed class LoginHandler : IRequestHandler<LoginRequest, LoginResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures
             _passwordHelper = passwordHelper;
         }
 
-        public async Task<bool> Handle(LoginRequest request, CancellationToken cancellationToken)
+        public async Task<LoginResponse> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByUsername(request.Username);
             if(user == null)
@@ -34,7 +34,7 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures
                 throw new NotFoundException("Incorrect password");
             }
 
-            return true;
+            return _mapper.Map<LoginResponse>(user);
         }
     }
 }

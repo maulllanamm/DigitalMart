@@ -6,5 +6,5 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures
     (
         string Username,
         string Password
-    ) : IRequest<bool>;
+    ) : IRequest<LoginResponse>;
 }

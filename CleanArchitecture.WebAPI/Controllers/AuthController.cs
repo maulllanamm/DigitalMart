@@ -57,10 +57,10 @@ namespace CleanArchitecture.WebAPI.Controllers
             try
             {
                 // Lakukan validasi menggunakan MediatR dan Validators
-                var isLogin = await _mediator.Send(request, cancellationToken);
+                var user = await _mediator.Send(request, cancellationToken);
 
                 // Buat akses token untuk user
-                var accessToken = _accessTokenHelper.GenerateAccessToken(request.Username);
+                var accessToken = _accessTokenHelper.GenerateAccessToken(user.Username, user.Role);
                 // Jika berhasil, kirim respon yang sesuai
                 return Ok(accessToken);
             }

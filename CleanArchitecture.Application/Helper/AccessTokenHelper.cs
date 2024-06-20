@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Helper.Interface;
+using CleanArchitecture.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,13 +17,14 @@ namespace CleanArchitecture.Application.Helper
             _token = token.Value;
         }
 
-        public string GenerateAccessToken(string username)
+        public string GenerateAccessToken(string username, Role role)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, role.name),
             };
 
             var tokenDescriptor = new JwtSecurityToken

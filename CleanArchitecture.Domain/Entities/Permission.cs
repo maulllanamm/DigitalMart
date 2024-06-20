@@ -11,6 +11,6 @@ namespace CleanArchitecture.Domain.Entities
         public string name { get; set; }
         public string http_method { get; set; }
         public string path { get; set; }
-        public ICollection<RolePermission> role_permissions { get; set; }
+        public List<RolePermission> role_permissions { get; set; }
     }
 }
