@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
 using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
 using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
@@ -25,6 +26,9 @@ namespace CleanArchitecture.Application
             
             CreateMap<GetByIdUserRequest, User>();
             CreateMap<User, GetByIdUserResponse>();
+
+            CreateMap<RegisterRequest, User>();
+            CreateMap<User, RegisterResponse>();
         }
     }
 }
