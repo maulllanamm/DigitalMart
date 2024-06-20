@@ -1,4 +1,4 @@
-using CleanArchitecture.Application.Common.Behaviors;
+using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
 using CleanArchitecture.Application.Helper.Interface;
@@ -38,6 +38,11 @@ namespace CleanArchitecture.WebAPI.Controllers
                 // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
                 return BadRequest(new { errors = ex.Errors });
             }
+            catch (NotFoundException ex)
+            {
+                // Jika tidak ada
+                return NotFound();
+            }
             catch (Exception ex)
             {
                 // Kembalikan respons 500 public Server Error ke klien
@@ -63,6 +68,11 @@ namespace CleanArchitecture.WebAPI.Controllers
             {
                 // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
                 return BadRequest(new { errors = ex.Errors });
+            }
+            catch (NotFoundException ex)
+            {
+                // Jika tidak ada
+                return NotFound();
             }
             catch (Exception ex)
             {

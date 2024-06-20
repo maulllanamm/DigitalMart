@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Common.Behaviors;
+﻿using CleanArchitecture.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 using System.Text.Json;

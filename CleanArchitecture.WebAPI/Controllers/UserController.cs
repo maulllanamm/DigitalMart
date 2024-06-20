@@ -1,4 +1,4 @@
-using CleanArchitecture.Application.Common.Behaviors;
+using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser;
 using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
