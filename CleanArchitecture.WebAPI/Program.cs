@@ -2,6 +2,7 @@ using CleanArchitecture.Application;
 using CleanArchitecture.Application.Helper;
 using CleanArchitecture.Persistence;
 using CleanArchitecture.WebAPI.Extensions;
+using CleanArchitecture.WebAPI.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -85,6 +86,8 @@ app.UseAuthentication();
 
 // Middleware autorisasi
 app.UseAuthorization();
+
+app.UseMiddleware<BaseMiddleware>();
 
 app.MapControllers();
 
