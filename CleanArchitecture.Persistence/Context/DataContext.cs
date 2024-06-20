@@ -10,12 +10,14 @@ namespace CleanArchitecture.Persistence.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Konfigurasi nama tabel
             modelBuilder.Entity<User>().ToTable("users");
             modelBuilder.Entity<Role>().ToTable("roles");
+            modelBuilder.Entity<Permission>().ToTable("permissions");
 
             // Daftar entitas yang ingin dikonfigurasi
             var entities = new[] { typeof(User)};
