@@ -16,5 +16,9 @@ namespace CleanArchitecture.Domain.Entities
         public string full_name { get; set; }
         public string phone_number { get; set; }
         public string address { get; set; }
+        public int role_id { get; set; }
+
+        [ForeignKey("role_id")]
+        public Role role { get; set; }
     }
 }

@@ -33,6 +33,7 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures
                 // Set password hash and salt
                 user.password_salt = passwordSalt;
                 user.password_hash = passwordHash;
+                user.role_id = 1;
 
                 var res = await _userRepository.Create(user);
                 return _mapper.Map<RegisterResponse>(res);

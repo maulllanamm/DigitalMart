@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.Application.Features.UserFeatures.Query.GetAll
+﻿using CleanArchitecture.Domain.Entities;
+
+namespace CleanArchitecture.Application.Features.UserFeatures.Query.GetAll
 {
     public sealed record GetAllUserResponse
     {
@@ -7,5 +9,6 @@
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
+        public Role Role { get; set; }
     }
 }
