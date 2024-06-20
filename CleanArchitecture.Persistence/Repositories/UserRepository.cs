@@ -1,7 +1,6 @@
 ﻿using CleanArchitecture.Application.Repositories;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Persistence.Repositories
 {
@@ -11,5 +10,10 @@ namespace CleanArchitecture.Persistence.Repositories
         {
         }
 
+
+        public async Task<User> GetByUsername(string username)
+        {
+            return _context.Users.FirstOrDefault(e => e.username == username);
+        }
     }
 }
