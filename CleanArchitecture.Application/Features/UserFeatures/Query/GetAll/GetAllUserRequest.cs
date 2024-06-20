@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
-using MediatR;
+﻿using MediatR;
 
 namespace CleanArchitecture.Application.Features.UserFeatures.Query.GetAll
 {

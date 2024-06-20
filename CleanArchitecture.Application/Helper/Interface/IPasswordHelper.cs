@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Application.Features.PasswordHelperFeatures
+﻿namespace CleanArchitecture.Application.Helper.Interface
 {
     public interface IPasswordHelper
     {

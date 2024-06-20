@@ -1,30 +1,26 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.Features.PasswordHelperFeatures;
-using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
+using CleanArchitecture.Application.Helper.Interface;
 using CleanArchitecture.Application.Repositories;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
 
-namespace CleanArchitecture.Application.Features.UserFeatures.Command.Create
+namespace CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures
 {
-    public sealed class CreateUserHandler : IRequestHandler<CreateUserRequest, CreateUserResponse>
+    public sealed class RegisterHandler : IRequestHandler<RegisterRequest, RegisterResponse>
     {
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IPasswordHelper _passwordHelper;
         private readonly string _papper = "v81IKJ3ZBFgwc2AdnYeOLhUn9muUtIQ0AJKgfewu*!(24uyjfebweuy";
         private readonly int _iteration = 5;
-
-        public CreateUserHandler(IUnitOfWork unitOfWork, IUserRepository userRepository, IMapper mapper, IPasswordHelper passwordHelper)
+        public RegisterHandler(IUserRepository userRepository, IMapper mapper, IPasswordHelper passwordHelper)
         {
-            _unitOfWork = unitOfWork;
             _userRepository = userRepository;
             _mapper = mapper;
             _passwordHelper = passwordHelper;
         }
 
-        public async Task<CreateUserResponse> Handle(CreateUserRequest request, CancellationToken cancellationToken)
+        public async Task<RegisterResponse> Handle(RegisterRequest request, CancellationToken cancellationToken)
         {
             try
             {
@@ -39,7 +35,7 @@ namespace CleanArchitecture.Application.Features.UserFeatures.Command.Create
                 user.password_hash = passwordHash;
 
                 var res = await _userRepository.Create(user);
-                return _mapper.Map<CreateUserResponse>(res);
+                return _mapper.Map<RegisterResponse>(res);
             }
             catch (Exception)
             {

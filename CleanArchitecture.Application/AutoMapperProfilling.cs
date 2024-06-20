@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
+using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
 using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetById;
@@ -14,9 +14,6 @@ namespace CleanArchitecture.Application
             SourceMemberNamingConvention = new LowerUnderscoreNamingConvention();
             DestinationMemberNamingConvention = new PascalCaseNamingConvention();
 
-            CreateMap<CreateUserRequest, User>();
-            CreateMap<User, CreateUserResponse>();
-
             CreateMap<UpdateUserRequest, User>();
             CreateMap<User, UpdateUserResponse>();
 
@@ -25,6 +22,9 @@ namespace CleanArchitecture.Application
             
             CreateMap<GetByIdUserRequest, User>();
             CreateMap<User, GetByIdUserResponse>();
+
+            CreateMap<RegisterRequest, User>();
+            CreateMap<User, RegisterResponse>();
         }
     }
 }

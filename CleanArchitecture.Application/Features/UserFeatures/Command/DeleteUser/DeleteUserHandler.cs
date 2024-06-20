@@ -19,7 +19,7 @@ namespace CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser
                 var user = await _userRepository.GetById(request.id);
                 if (user == null)
                 {
-                    throw new NotFoundException();
+                    throw new NotFoundException("User Not Found");
                 }
 
                 return await _userRepository.Delete(request.id);

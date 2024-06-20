@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace CleanArchitecture.Application.Features.UserFeatures.Command.Create
+namespace CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures
 {
-    public class CreateUserValidator : AbstractValidator<CreateUserRequest>
+    public class RegisterValidator : AbstractValidator<RegisterRequest>
     {
-        public CreateUserValidator()
+        public RegisterValidator()
         {
             RuleFor(x => x.Username).NotEmpty().MinimumLength(3).MaximumLength(50);
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8).MaximumLength(50);

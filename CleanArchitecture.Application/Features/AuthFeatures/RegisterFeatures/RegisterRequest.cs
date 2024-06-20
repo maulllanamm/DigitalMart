@@ -1,8 +1,8 @@
 ﻿using MediatR;
 
-namespace CleanArchitecture.Application.Features.UserFeatures.Command.Create
+namespace CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures
 {
-    public sealed record CreateUserRequest
+    public sealed record RegisterRequest
     (
         string Username,
         string Password,
@@ -10,5 +10,5 @@ namespace CleanArchitecture.Application.Features.UserFeatures.Command.Create
         string Fullname,
         string PhoneNumber,
         string Address
-    ) : IRequest<CreateUserResponse>;
+    ) : IRequest<RegisterResponse>;
 }
