@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
 using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetById;
+using CleanArchitecture.Application.Features.UserFeatures.Query.GetByUsername;
 using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application
@@ -22,7 +23,10 @@ namespace CleanArchitecture.Application
             CreateMap<User, GetAllUserResponse>();            
             
             CreateMap<GetByIdUserRequest, User>();
-            CreateMap<User, GetByIdUserResponse>();
+            CreateMap<User, GetByIdUserResponse>();            
+            
+            CreateMap<GetByUsernameRequest, User>();
+            CreateMap<User, GetByUsernameResponse>();
 
             CreateMap<RegisterRequest, User>();
             CreateMap<User, RegisterResponse>();
