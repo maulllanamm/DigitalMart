@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Common.Behaviors;
+﻿using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Repositories;
 using MediatR;
 
