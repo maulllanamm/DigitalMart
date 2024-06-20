@@ -22,7 +22,7 @@ namespace CleanArchitecture.Application.Features.UserFeatures.Query.GetById
                 var user = await _userRepository.GetById(request.id);
                 if (user == null)
                 {
-                    throw new NotFoundException();
+                    throw new NotFoundException("User Not Found");
                 }
                 return _mapper.Map<GetByIdUserResponse>(user);
             }

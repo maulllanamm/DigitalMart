@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CleanArchitecture.Application.Features.PasswordHelperFeatures;
-using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
+using CleanArchitecture.Application.Helper.Interface;
 using CleanArchitecture.Application.Repositories;
 using CleanArchitecture.Domain.Entities;
 using MediatR;

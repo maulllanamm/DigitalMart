@@ -1,4 +1,5 @@
 using CleanArchitecture.Application;
+using CleanArchitecture.Application.Helper;
 using CleanArchitecture.Persistence;
 using CleanArchitecture.WebAPI.Extensions;
 
@@ -15,8 +16,12 @@ builder.Services.ConfigureApiBehavior();
 builder.Services.ConfigureCorsPolicy();
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
+// ngambil token management dari appseting.json (option pattern)
+builder.Services.Configure<TokenManagement>(builder.Configuration.GetSection("TokenManagement"));
+var token = builder.Configuration.GetSection("TokenManagement").Get<TokenManagement>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

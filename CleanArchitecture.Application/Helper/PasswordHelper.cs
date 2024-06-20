@@ -1,7 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using CleanArchitecture.Application.Helper.Interface;
 
-namespace CleanArchitecture.Application.Features.PasswordHelperFeatures
+namespace CleanArchitecture.Application.Helper
 {
     public class PasswordHelper : IPasswordHelper
     {

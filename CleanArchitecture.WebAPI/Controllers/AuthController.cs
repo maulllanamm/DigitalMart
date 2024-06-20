@@ -1,25 +1,23 @@
 using CleanArchitecture.Application.Common.Behaviors;
 using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
-using CleanArchitecture.Application.Features.UserFeatures.Command.Create;
-using CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser;
-using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
-using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
-using CleanArchitecture.Application.Features.UserFeatures.Query.GetById;
+using CleanArchitecture.Application.Helper.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
     [ApiController]
-    [Route("auth")]
+    [Route("[controller]/[action]")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IAccessTokenHelper _accessTokenHelper;
 
-        public AuthController(IMediator mediator)
+        public AuthController(IMediator mediator, IAccessTokenHelper accessTokenHelper)
         {
             _mediator = mediator;
+            _accessTokenHelper = accessTokenHelper;
         }
 
 
@@ -56,8 +54,10 @@ namespace CleanArchitecture.WebAPI.Controllers
                 // Lakukan validasi menggunakan MediatR dan Validators
                 var isLogin = await _mediator.Send(request, cancellationToken);
 
+                // Buat akses token untuk user
+                var accessToken = _accessTokenHelper.GenerateAccessToken(request.Username);
                 // Jika berhasil, kirim respon yang sesuai
-                return Ok(isLogin);
+                return Ok(accessToken);
             }
             catch (BadRequestException ex)
             {

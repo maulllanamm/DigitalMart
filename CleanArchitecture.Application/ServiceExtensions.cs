@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Application.Common.Behaviors;
-using CleanArchitecture.Application.Features.PasswordHelperFeatures;
+using CleanArchitecture.Application.Helper;
+using CleanArchitecture.Application.Helper.Interface;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,9 @@ namespace CleanArchitecture.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
             services.AddScoped<IPasswordHelper, PasswordHelper>();
+            services.AddScoped<IAccessTokenHelper, AccessTokenHelper>();
         }
     }
 }
