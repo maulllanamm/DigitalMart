@@ -87,7 +87,8 @@ app.UseAuthentication();
 // Middleware autorisasi
 app.UseAuthorization();
 
-app.UseMiddleware<BaseMiddleware>();
+app.UseMiddleware<PermisionMiddleware>();
+app.UseMiddleware<GlobalErrorHandlerMiddleware>();
 
 app.MapControllers();
 

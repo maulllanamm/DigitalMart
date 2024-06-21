@@ -1,4 +1,3 @@
-using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
 using CleanArchitecture.Application.Helper.Interface;
@@ -25,60 +24,17 @@ namespace CleanArchitecture.WebAPI.Controllers
         public async Task<ActionResult<RegisterResponse>> Register(RegisterRequest request,
            CancellationToken cancellationToken)
         {
-            try
-            {
-                // Lakukan validasi menggunakan MediatR dan Validators
-                var result = await _mediator.Send(request, cancellationToken);
-
-                // Jika berhasil, kirim respon yang sesuai
-                return Ok(result);
-            }
-            catch (BadRequestException ex)
-            {
-                // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
-                return BadRequest(new { errors = ex.Errors });
-            }
-            catch (NotFoundException ex)
-            {
-                // Jika tidak ada
-                return NotFound(new { errors = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                // Kembalikan respons 500 public Server Error ke klien
-                return StatusCode(500, "An unexpected error occurred. Please try again later.");
-            }
+            var result = await _mediator.Send(request, cancellationToken);
+            return Ok(result);
         }
 
         [HttpPost]
         public async Task<ActionResult<string>> Login(LoginRequest request,
            CancellationToken cancellationToken)
         {
-            try
-            {
-                // Lakukan validasi menggunakan MediatR dan Validators
-                var user = await _mediator.Send(request, cancellationToken);
-
-                // Buat akses token untuk user
-                var accessToken = _accessTokenHelper.GenerateAccessToken(user.Username, user.Role);
-                // Jika berhasil, kirim respon yang sesuai
-                return Ok(accessToken);
-            }
-            catch (BadRequestException ex)
-            {
-                // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
-                return BadRequest(new { errors = ex.Errors });
-            }
-            catch (NotFoundException ex)
-            {
-                // Jika tidak ada
-                return NotFound(new { errors = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                // Kembalikan respons 500 public Server Error ke klien
-                return StatusCode(500, "An unexpected error occurred. Please try again later.");
-            }
+            var user = await _mediator.Send(request, cancellationToken);
+            var accessToken = _accessTokenHelper.GenerateAccessToken(user.Username, user.Role);
+            return Ok(accessToken);
         }
 
     }
