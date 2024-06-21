@@ -20,5 +20,8 @@ namespace CleanArchitecture.Domain.Entities
 
         [ForeignKey("role_id")]
         public Role role { get; set; }
+        public string? refresh_token { get; set; }
+        public DateTimeOffset? refresh_token_created { get; set; }
+        public DateTimeOffset? refresh_token_expires { get; set; }
     }
 }

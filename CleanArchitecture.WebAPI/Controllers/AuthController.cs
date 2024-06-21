@@ -12,11 +12,13 @@ namespace CleanArchitecture.WebAPI.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IAccessTokenHelper _accessTokenHelper;
+        private readonly IRefreshTokenHelper _refreshTokenHelper;
 
-        public AuthController(IMediator mediator, IAccessTokenHelper accessTokenHelper)
+        public AuthController(IMediator mediator, IAccessTokenHelper accessTokenHelper, IRefreshTokenHelper refreshTokenHelper)
         {
             _mediator = mediator;
             _accessTokenHelper = accessTokenHelper;
+            _refreshTokenHelper = refreshTokenHelper;
         }
 
 
@@ -34,6 +36,8 @@ namespace CleanArchitecture.WebAPI.Controllers
         {
             var user = await _mediator.Send(request, cancellationToken);
             var accessToken = _accessTokenHelper.GenerateAccessToken(user.Username, user.Role);
+            var refreshToken = _refreshTokenHelper.GenerateRefreshToken(user.Username);
+            _refreshTokenHelper.SetRefreshToken(refreshToken, user.Username);
             return Ok(accessToken);
         }
 
