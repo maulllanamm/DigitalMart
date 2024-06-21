@@ -28,6 +28,9 @@ builder.Services.ConfigureCorsPolicy();
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Registrasi IHttpClientFactory
+builder.Services.AddHttpClient();
+
 // Add services untuk http context
 builder.Services.AddHttpContextAccessor();
 

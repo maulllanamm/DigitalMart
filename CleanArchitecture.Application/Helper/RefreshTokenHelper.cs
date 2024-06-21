@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Helper.Interface;
 using CleanArchitecture.Application.Repositories;
@@ -26,13 +27,14 @@ namespace CleanArchitecture.Application.Helper
             _mapper = mapper;
         }
 
-        public string GenerateRefreshToken(string username)
+        public string GenerateRefreshToken(string username, string roleName)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, roleName),
             };
 
             var tokenDescriptor = new JwtSecurityToken
@@ -64,7 +66,22 @@ namespace CleanArchitecture.Application.Helper
             newUser.refresh_token_created = DateTime.UtcNow;
             newUser.refresh_token_expires = DateTime.UtcNow.AddMinutes(_token.ExpiryRefreshMinutes);
 
-            _userRepository.Update(newUser);
+            await _userRepository.Update(newUser);
+        }
+        public async Task ValidateRefreshToken(string username, string refreshToken)
+        {
+            var user = await _userRepository.GetByUsername(username);
+            var errors = new string[] { };
+            if (!user.refresh_token.Equals(refreshToken))
+            {
+                errors = new string[] { "Invalid Refresh token." };
+                throw new BadRequestException(errors);
+            }
+            else if (user.refresh_token_expires < DateTime.Now)
+            {
+                errors = new string[] { "Token expired." };
+                throw new BadRequestException(errors);
+            }
         }
     }
 }

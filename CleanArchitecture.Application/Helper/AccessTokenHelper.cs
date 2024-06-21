@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Helper.Interface;
+﻿using CleanArchitecture.Application.Common.Exceptions;
+using CleanArchitecture.Application.Helper.Interface;
 using CleanArchitecture.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,14 +18,14 @@ namespace CleanArchitecture.Application.Helper
             _token = token.Value;
         }
 
-        public string GenerateAccessToken(string username, Role role)
+        public string GenerateAccessToken(string username, string roleName)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, username),
-                new Claim(ClaimTypes.Role, role.name),
+                new Claim(ClaimTypes.Role, roleName),
             };
 
             var tokenDescriptor = new JwtSecurityToken
@@ -39,6 +40,35 @@ namespace CleanArchitecture.Application.Helper
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.WriteToken(tokenDescriptor);
             return token;
+        }
+
+        public ClaimsPrincipal ValidateAccessToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret));
+
+            var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                IssuerSigningKey = key,
+                ValidIssuer = _token.Issuer,
+                ValidAudience = _token.Audience,
+                ClockSkew = TimeSpan.Zero
+            }, out var validatedToken);
+
+
+            var jsonToken = validatedToken as JwtSecurityToken;
+
+            var isValidToken = jsonToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha512Signature, StringComparison.InvariantCultureIgnoreCase);
+            if (jsonToken == null || !isValidToken)
+            {
+                var errors = new string[] { "Invalid token." };
+                throw new BadRequestException(errors);
+            }
+            return principal;
         }
     }
 }
