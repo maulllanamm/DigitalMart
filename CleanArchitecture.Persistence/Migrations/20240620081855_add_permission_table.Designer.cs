@@ -3,6 +3,7 @@ using System;
 using CleanArchitecture.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CleanArchitecture.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240620081855_add_permission_table")]
+    partial class add_permission_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,21 +64,6 @@ namespace CleanArchitecture.Persistence.Migrations
                     b.HasKey("id");
 
                     b.ToTable("roles", (string)null);
-                });
-
-            modelBuilder.Entity("CleanArchitecture.Domain.Entities.RolePermission", b =>
-                {
-                    b.Property<int>("role_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("permission_id")
-                        .HasColumnType("integer");
-
-                    b.HasKey("role_id", "permission_id");
-
-                    b.HasIndex("permission_id");
-
-                    b.ToTable("role_permissions", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.User", b =>
@@ -150,25 +137,6 @@ namespace CleanArchitecture.Persistence.Migrations
                     b.ToTable("users", (string)null);
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Entities.RolePermission", b =>
-                {
-                    b.HasOne("CleanArchitecture.Domain.Entities.Permission", "permission")
-                        .WithMany("role_permissions")
-                        .HasForeignKey("permission_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CleanArchitecture.Domain.Entities.Role", "role")
-                        .WithMany("role_permissions")
-                        .HasForeignKey("role_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("permission");
-
-                    b.Navigation("role");
-                });
-
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.User", b =>
                 {
                     b.HasOne("CleanArchitecture.Domain.Entities.Role", "role")
@@ -178,16 +146,6 @@ namespace CleanArchitecture.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("role");
-                });
-
-            modelBuilder.Entity("CleanArchitecture.Domain.Entities.Permission", b =>
-                {
-                    b.Navigation("role_permissions");
-                });
-
-            modelBuilder.Entity("CleanArchitecture.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("role_permissions");
                 });
 #pragma warning restore 612, 618
         }

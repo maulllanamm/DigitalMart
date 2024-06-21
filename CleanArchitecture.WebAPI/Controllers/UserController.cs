@@ -3,14 +3,16 @@ using CleanArchitecture.Application.Features.UserFeatures.Command.DeleteUser;
 using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetById;
+using CleanArchitecture.Application.Features.UserFeatures.Query.GetByUsername;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
     [ApiController]
-    [Route("user")]
+    [Route("[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -48,14 +50,42 @@ namespace CleanArchitecture.WebAPI.Controllers
                 return StatusCode(500, "An unexpected error occurred. Please try again later.");
             }
         }
-
-        [HttpGet("id")]
+        [Authorize]
+        [HttpGet]
         public async Task<ActionResult<GetByIdUserResponse>> GetById(int id, CancellationToken cancellationToken)
         {
             try
             {
                 // Lakukan validasi menggunakan MediatR dan Validators
                 var result = await _mediator.Send(new GetByIdUserRequest(id), cancellationToken);
+
+                // Jika berhasil, kirim respon yang sesuai
+                return Ok(result);
+            }
+            catch (BadRequestException ex)
+            {
+                // Jika terjadi kesalahan validasi, kirim pesan kesalahan ke klien
+                return BadRequest(new { errors = ex.Errors });
+            }
+            catch (NotFoundException ex)
+            {
+                // Jika id tidak ada
+                return NotFound(new { errors = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Kembalikan respons 500 public Server Error ke klien
+                return StatusCode(500, "An unexpected error occurred. Please try again later.");
+            }
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<GetByIdUserResponse>> GetByUsername(string username, CancellationToken cancellationToken)
+        {
+            try
+            {
+                // Lakukan validasi menggunakan MediatR dan Validators
+                var result = await _mediator.Send(new GetByUsernameRequest(username), cancellationToken);
 
                 // Jika berhasil, kirim respon yang sesuai
                 return Ok(result);

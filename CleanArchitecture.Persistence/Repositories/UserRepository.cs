@@ -28,6 +28,9 @@ namespace CleanArchitecture.Persistence.Repositories
         public async Task<User> GetByUsername(string username)
         {
             return _context.Users
+                .Include(r => r.role)
+                .ThenInclude(rp => rp.role_permissions)
+                .ThenInclude(p => p.permission)
                 .FirstOrDefault(e => e.username == username);
         }
     }
