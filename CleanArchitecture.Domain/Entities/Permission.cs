@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CleanArchitecture.Domain.Entities
 {
@@ -11,5 +12,7 @@ namespace CleanArchitecture.Domain.Entities
         public string name { get; set; }
         public string http_method { get; set; }
         public string path { get; set; }
+        [JsonIgnore]
+        public List<RolePermission> role_permissions { get; set; }
     }
 }

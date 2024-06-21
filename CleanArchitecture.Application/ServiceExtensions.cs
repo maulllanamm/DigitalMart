@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Common.Behaviors;
+using CleanArchitecture.Application.Features.UserFeatures.Query.GetByUsername;
 using CleanArchitecture.Application.Helper;
 using CleanArchitecture.Application.Helper.Interface;
 using FluentValidation;
@@ -16,6 +17,8 @@ namespace CleanArchitecture.Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            services.AddScoped<IRequestHandler<GetByUsernameRequest, GetByUsernameResponse>, GetByUsernameHandler>();
 
             services.AddScoped<IPasswordHelper, PasswordHelper>();
             services.AddScoped<IAccessTokenHelper, AccessTokenHelper>();

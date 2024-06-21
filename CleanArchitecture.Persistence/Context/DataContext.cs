@@ -24,6 +24,16 @@ namespace CleanArchitecture.Persistence.Context
             modelBuilder.Entity<RolePermission>()
             .HasKey(rp => new { rp.role_id, rp.permission_id });
 
+            modelBuilder.Entity<Role>()
+            .HasMany(r => r.role_permissions)
+            .WithOne(rp => rp.role)
+            .HasForeignKey(rp => rp.role_id);
+
+            modelBuilder.Entity<Permission>()
+                .HasMany(p => p.role_permissions)
+                .WithOne(rp => rp.permission)
+                .HasForeignKey(rp => rp.permission_id);
+
             // Daftar entitas yang ingin dikonfigurasi
             var entities = new[] { typeof(User)};
             foreach (var entity in entities)

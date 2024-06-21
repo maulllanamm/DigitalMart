@@ -50,7 +50,7 @@ namespace CleanArchitecture.WebAPI.Controllers
                 return StatusCode(500, "An unexpected error occurred. Please try again later.");
             }
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<GetByIdUserResponse>> GetById(int id, CancellationToken cancellationToken)
         {
@@ -78,7 +78,7 @@ namespace CleanArchitecture.WebAPI.Controllers
                 return StatusCode(500, "An unexpected error occurred. Please try again later.");
             }
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<GetByIdUserResponse>> GetByUsername(string username, CancellationToken cancellationToken)
         {
