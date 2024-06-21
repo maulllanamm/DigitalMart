@@ -6,11 +6,11 @@ using System.Security.Claims;
 
 namespace CleanArchitecture.WebAPI.Middleware
 {
-    public class BaseMiddleware
+    public class PermisionMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly IMediator _mediator;
-        public BaseMiddleware(RequestDelegate next, IMediator mediator)
+        public PermisionMiddleware(RequestDelegate next, IMediator mediator)
         {
             _next = next;
             _mediator = mediator;
