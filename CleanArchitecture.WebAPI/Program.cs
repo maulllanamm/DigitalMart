@@ -11,6 +11,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Menambahkan logging
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 // Add services dari layer Persistence
 builder.Services.ConfigurePersistence(builder.Configuration);
 
@@ -23,6 +27,12 @@ builder.Services.ConfigureCorsPolicy();
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+// Registrasi IHttpClientFactory
+builder.Services.AddHttpClient();
+
+// Add services untuk http context
+builder.Services.AddHttpContextAccessor();
 
 // ngambil token management dari appseting.json (option pattern)
 builder.Services.Configure<TokenManagement>(builder.Configuration.GetSection("TokenManagement"));
@@ -60,36 +70,55 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Dapatkan logger untuk program utama
+var logger = app.Logger;
+
+
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    logger.LogInformation("Aplikasi dimulai.");
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    // jika UseAuthentication dibawah UseAuthorization
+    // maka meskipun udah login, ketika hit api yang authorize
+    // dia bakalan return 401 (unauthorized)
+
+    // jika UseAuthentication di comment
+    // maka meskipun udah login, ketika hit api yang authorize
+    // namun bakalan return 401 (unauthorized)
+
+    // Middleware otentikasi JWT
+    app.UseAuthentication();
+
+    // jika UseAuthorization di comment
+    // maka meskipun udah login, tetap bisa hit api yang authorize
+    // namun bakalan error
+
+    // Middleware autorisasi
+    app.UseAuthorization();
+
+    app.UseMiddleware<PermisionMiddleware>();
+    app.UseMiddleware<GlobalErrorHandlerMiddleware>();
+
+    app.MapControllers();
+
+    app.Run();
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "Aplikasi berhenti karena terjadi kesalahan tidak terduga.");
+}
+finally
+{
+    logger.LogInformation("Aplikasi berakhir.");
 }
 
-app.UseHttpsRedirection();
 
-// jika UseAuthentication dibawah UseAuthorization
-// maka meskipun udah login, ketika hit api yang authorize
-// dia bakalan return 401 (unauthorized)
-
-// jika UseAuthentication di comment
-// maka meskipun udah login, ketika hit api yang authorize
-// namun bakalan return 401 (unauthorized)
-
-// Middleware otentikasi JWT
-app.UseAuthentication();
-
-// jika UseAuthorization di comment
-// maka meskipun udah login, tetap bisa hit api yang authorize
-// namun bakalan error
-
-// Middleware autorisasi
-app.UseAuthorization();
-
-app.UseMiddleware<PermisionMiddleware>();
-app.UseMiddleware<GlobalErrorHandlerMiddleware>();
-
-app.MapControllers();
-
-app.Run();

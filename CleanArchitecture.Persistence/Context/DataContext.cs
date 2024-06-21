@@ -1,5 +1,4 @@
-﻿using CleanArchitecture.Domain.Common;
-using CleanArchitecture.Domain.Entities;
+﻿using CleanArchitecture.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Persistence.Context
