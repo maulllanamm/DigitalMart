@@ -56,15 +56,6 @@ namespace CleanArchitecture.WebAPI.Controllers
         public async Task<ActionResult<string>> Verify(string verifyToken ,CancellationToken cancellationToken)
         {
             var verify = await _mediator.Send(new VerifyRequest(verifyToken), cancellationToken);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.ReadToken(verifyToken) as JwtSecurityToken;
-
-            DateTime expires = securityToken.ValidTo;
-            if (expires < DateTime.Now)
-            {
-                return Unauthorized("Token expired.");
-            }
             return Ok(verify);
         }
 

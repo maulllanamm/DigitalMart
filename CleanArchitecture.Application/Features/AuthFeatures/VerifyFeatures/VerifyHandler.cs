@@ -2,6 +2,7 @@
 using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Repositories;
 using MediatR;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CleanArchitecture.Application.Features.AuthFeatures.VerifyFeatures
 {
@@ -22,6 +23,16 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.VerifyFeatures
             {
                 throw new NotFoundException("Invalid token");
             }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.ReadToken(user.verify_token) as JwtSecurityToken;
+
+            DateTime expires = securityToken.ValidTo;
+            if (expires < DateTime.Now)
+            {
+                throw new UnauthorizedException("Token expired.");
+            }
+
             user.verify_date = DateTime.UtcNow;
             await _userRepository.Update(user);
             return "User verified";
