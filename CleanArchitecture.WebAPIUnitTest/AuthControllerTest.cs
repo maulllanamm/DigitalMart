@@ -71,16 +71,16 @@ namespace CleanArchitecture.WebAPIUnitTest
 
             // Assert
             var okResult = result.Result as OkObjectResult;
-            Assert.NotNull(okResult);
-            Assert.Equal(200, okResult.StatusCode);
+            okResult.Should().NotBeNull();
+            okResult.StatusCode.Should().Be(200);
 
             var registerResponse = okResult.Value as RegisterResponse;
-            Assert.NotNull(registerResponse);
-            Assert.Equal(expectedResult.Username, registerResponse.Username);
-            Assert.Equal(expectedResult.Email, registerResponse.Email);
-            Assert.Equal(expectedResult.FullName, registerResponse.FullName);
-            Assert.Equal(expectedResult.PhoneNumber, registerResponse.PhoneNumber);
-            Assert.Equal(expectedResult.Address, registerResponse.Address);
+            registerResponse.Should().NotBeNull();
+            registerResponse.Username.Should().Be(expectedResult.Username);
+            registerResponse.Email.Should().Be(expectedResult.Email);
+            registerResponse.FullName.Should().Be(expectedResult.FullName);
+            registerResponse.PhoneNumber.Should().Be(expectedResult.PhoneNumber);
+            registerResponse.Address.Should().Be(expectedResult.Address);
         }
 
         [Fact]
