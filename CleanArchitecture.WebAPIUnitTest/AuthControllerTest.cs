@@ -133,7 +133,7 @@ namespace CleanArchitecture.WebAPIUnitTest
 
             var loginResponse = okResult.Value as string;
             loginResponse.Should().NotBeNull();
-            loginResponse.Should().BeSameAs("fake_access_token");
+            loginResponse.Should().Be("fake_access_token");
         }
     }
 }
