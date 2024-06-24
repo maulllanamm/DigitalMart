@@ -21,15 +21,13 @@ namespace CleanArchitecture.WebAPI.Controllers
         private readonly IAccessTokenHelper _accessTokenHelper;
         private readonly IRefreshTokenHelper _refreshTokenHelper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IHttpClientFactory _clientFactory;
 
-        public AuthController(IMediator mediator, IAccessTokenHelper accessTokenHelper, IRefreshTokenHelper refreshTokenHelper, IHttpContextAccessor httpContextAccessor, IHttpClientFactory clientFactory)
+        public AuthController(IMediator mediator, IAccessTokenHelper accessTokenHelper, IRefreshTokenHelper refreshTokenHelper, IHttpContextAccessor httpContextAccessor)
         {
             _mediator = mediator;
             _accessTokenHelper = accessTokenHelper;
             _refreshTokenHelper = refreshTokenHelper;
             _httpContextAccessor = httpContextAccessor;
-            _clientFactory = clientFactory;
         }
 
 
