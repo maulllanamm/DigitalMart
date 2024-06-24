@@ -1,5 +1,8 @@
+using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
+using CleanArchitecture.Application.Helper;
 using CleanArchitecture.Application.Helper.Interface;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.WebAPI.Controllers;
 using FluentAssertions;
 using MediatR;
@@ -57,7 +60,7 @@ namespace CleanArchitecture.WebAPIUnitTest
                 FullName = registerRequest.Fullname,
                 PhoneNumber = registerRequest.PhoneNumber,
                 Address = registerRequest.Address
-            };   
+            };
 
             _mediatorMock
                 .Setup(m => m.Send(It.IsAny<RegisterRequest>(), cancellationToken))
@@ -78,6 +81,59 @@ namespace CleanArchitecture.WebAPIUnitTest
             Assert.Equal(expectedResult.FullName, registerResponse.FullName);
             Assert.Equal(expectedResult.PhoneNumber, registerResponse.PhoneNumber);
             Assert.Equal(expectedResult.Address, registerResponse.Address);
+        }
+
+        [Fact]
+        public async Task Login_SuccessfulLogin_ReturnsOk()
+        {
+            // Arrange
+            var request = new LoginRequest(
+                Username: "testusername",
+                Password: "testpassword"
+            );
+
+            var cancellationToken = CancellationToken.None;
+            var expectedResult = new LoginResponse // Mock expected response
+            {
+                Id = 1,
+                Username = request.Username,
+                Email = "testEmail@gmail.com",
+                FullName = "testFullName",
+                PhoneNumber = "0812345678",
+                Address = "testAddress",
+                Role = new Role
+                {
+                    id = 1,
+                    name = "testRole"
+                }
+            };
+
+            _mediatorMock
+                .Setup(m => m.Send(It.IsAny<LoginRequest>(), cancellationToken))
+                .ReturnsAsync(expectedResult);
+
+            _accessTokenHelperMock
+                .Setup(m => m.GenerateAccessToken(request.Username, expectedResult.Role.name))
+                .Returns("fake_access_token");
+
+            _refreshTokenHelperMock
+                .Setup(m => m.GenerateRefreshToken(request.Username, expectedResult.Role.name))
+                .Returns("fake_refresh_token");
+
+            _refreshTokenHelperMock
+                .Setup(m => m.SetRefreshToken(request.Username, expectedResult.Role.name));
+
+            // Act
+            var result = await _controller.Login(request, cancellationToken);
+
+            // Assert
+            var okResult = result.Result as OkObjectResult;
+            okResult.Should().NotBeNull();
+            okResult.StatusCode.Should().Be(200);
+
+            var loginResponse = okResult.Value as string;
+            loginResponse.Should().NotBeNull();
+            loginResponse.Should().BeSameAs("fake_access_token");
         }
     }
 }
