@@ -28,7 +28,7 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.VerifyFeatures
             var securityToken = tokenHandler.ReadToken(user.verify_token) as JwtSecurityToken;
 
             DateTime expires = securityToken.ValidTo;
-            if (expires < DateTime.Now)
+            if (DateTime.Now > expires)
             {
                 throw new UnauthorizedException("Token expired.");
             }

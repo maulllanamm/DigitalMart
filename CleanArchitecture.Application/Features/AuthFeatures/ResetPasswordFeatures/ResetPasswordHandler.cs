@@ -28,10 +28,7 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.ResetPasswordFeatu
                 throw new BadRequestException(errors);
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var securityToken = tokenHandler.ReadToken(request.PasswordResetToken) as JwtSecurityToken;
-
-            if (securityToken.ValidTo < user.password_reset_expires)
+            if (DateTime.UtcNow > user.password_reset_expires)
             {
                 throw new UnauthorizedException("Token expired.");
             }

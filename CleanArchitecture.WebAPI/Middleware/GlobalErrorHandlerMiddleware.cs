@@ -68,6 +68,28 @@ namespace CleanArchitecture.WebAPI.Middleware
                 await httpContext.Response.WriteAsync(response);
 
                 return;
+            }catch (UnauthorizedException ex)
+            {
+
+                var detail = new ProblemDetails()
+                {
+                    Detail = ex.Message,
+                    Instance = httpContext.Request.Path,
+                    Status = (int)HttpStatusCode.Unauthorized,
+                    Title = "Unauthorized",
+                    Type = "https://example.com/not-found" 
+                };
+
+                var response = JsonSerializer.Serialize(detail, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                });
+
+                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                httpContext.Response.ContentType = "application/json";
+                await httpContext.Response.WriteAsync(response);
+
+                return;
             }
             catch (Exception e)
             {
