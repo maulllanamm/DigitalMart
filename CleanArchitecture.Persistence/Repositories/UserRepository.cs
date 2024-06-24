@@ -45,5 +45,11 @@ namespace CleanArchitecture.Persistence.Repositories
             return _context.Users
                 .FirstOrDefault(t => t.email == email);
         }
+
+        public async Task<User> GetByPasswordResetToken(string resetPasswordToken)
+        {
+            return _context.Users
+                .FirstOrDefault(rpt => rpt.password_reset_token == resetPasswordToken);
+        }
     }
 }

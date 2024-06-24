@@ -2,6 +2,7 @@ using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Features.AuthFeatures.ForgotPasswordFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
+using CleanArchitecture.Application.Features.AuthFeatures.ResetPasswordFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.VerifyFeatures;
 using CleanArchitecture.Application.Helper.Interface;
 using MediatR;
@@ -98,6 +99,11 @@ namespace CleanArchitecture.WebAPI.Controllers
             return Ok(forgotPassword);
         }
 
-
+        [HttpPost]
+        public async Task<ActionResult<string>> ResetPassword(ResetPasswordRequest request, CancellationToken cancellationToken)
+        {
+            var resetPassword = await _mediator.Send(request, cancellationToken);
+            return Ok(resetPassword);
+        }
     }
 }
