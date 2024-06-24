@@ -33,5 +33,11 @@ namespace CleanArchitecture.Persistence.Repositories
                 .ThenInclude(p => p.permission)
                 .FirstOrDefault(e => e.username == username);
         }
+
+        public async Task<User> GetByVerifyToken(string verifyToken)
+        {
+            return _context.Users
+                .FirstOrDefault(t => t.verify_token == verifyToken);
+        }
     }
 }

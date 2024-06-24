@@ -1,10 +1,12 @@
 using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
+using CleanArchitecture.Application.Features.AuthFeatures.VerifyFeatures;
 using CleanArchitecture.Application.Helper.Interface;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 
@@ -50,6 +52,22 @@ namespace CleanArchitecture.WebAPI.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult<string>> Verify(string verifyToken ,CancellationToken cancellationToken)
+        {
+            var verify = await _mediator.Send(new VerifyRequest(verifyToken), cancellationToken);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.ReadToken(verifyToken) as JwtSecurityToken;
+
+            DateTime expires = securityToken.ValidTo;
+            if (expires < DateTime.Now)
+            {
+                return Unauthorized("Token expired.");
+            }
+            return Ok(verify);
+        }
+
+        [HttpPost]
         public async Task<ActionResult<string>> RefreshToken()
         {
             var refreshToken = _httpContextAccessor.HttpContext.Request.Cookies["refreshToken"];
@@ -72,5 +90,7 @@ namespace CleanArchitecture.WebAPI.Controllers
             _refreshTokenHelper.SetRefreshToken(newRefreshToken, username);
             return Ok(newAccessToken);
         }
+
+
     }
 }

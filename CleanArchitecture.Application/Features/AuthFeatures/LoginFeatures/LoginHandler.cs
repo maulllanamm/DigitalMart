@@ -34,6 +34,12 @@ namespace CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures
                 throw new NotFoundException("Incorrect password");
             }
 
+            if (user.verify_date is null)
+            {
+                var errors = new string[] { "User is not verified" };
+                throw new BadRequestException(errors);
+            }
+
             return _mapper.Map<LoginResponse>(user);
         }
     }

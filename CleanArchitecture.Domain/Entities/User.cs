@@ -23,5 +23,7 @@ namespace CleanArchitecture.Domain.Entities
         public string? refresh_token { get; set; }
         public DateTimeOffset? refresh_token_created { get; set; }
         public DateTimeOffset? refresh_token_expires { get; set; }
+        public string? verify_token { get; set; }
+        public DateTimeOffset? verify_date { get; set; }
     }
 }
