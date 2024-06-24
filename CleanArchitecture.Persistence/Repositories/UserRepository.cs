@@ -39,5 +39,11 @@ namespace CleanArchitecture.Persistence.Repositories
             return _context.Users
                 .FirstOrDefault(t => t.verify_token == verifyToken);
         }
+
+        public async Task<User> GetByEmail(string email)
+        {
+            return _context.Users
+                .FirstOrDefault(t => t.email == email);
+        }
     }
 }

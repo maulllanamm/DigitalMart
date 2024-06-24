@@ -1,14 +1,14 @@
 using CleanArchitecture.Application.Common.Exceptions;
+using CleanArchitecture.Application.Features.AuthFeatures.ForgotPasswordFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.LoginFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.RegisterFeatures;
 using CleanArchitecture.Application.Features.AuthFeatures.VerifyFeatures;
 using CleanArchitecture.Application.Helper.Interface;
-using CleanArchitecture.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Threading;
 
 namespace CleanArchitecture.WebAPI.Controllers
 {
@@ -89,6 +89,13 @@ namespace CleanArchitecture.WebAPI.Controllers
             var newRefreshToken = _refreshTokenHelper.GenerateRefreshToken(username, roleName);
             _refreshTokenHelper.SetRefreshToken(newRefreshToken, username);
             return Ok(newAccessToken);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> ForgotPassword(string email, CancellationToken cancellationToken)
+        {
+            var forgotPassword = await _mediator.Send(new ForgotPasswordRequest(email), cancellationToken);
+            return Ok(forgotPassword);
         }
 
 
