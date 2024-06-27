@@ -22,6 +22,7 @@ namespace CleanArchitecture.Application
             services.AddScoped<IRefreshTokenHelper, RefreshTokenHelper>();
             services.AddScoped<IVerifyTokenHelper, VerifyTokenHelper>();
             services.AddScoped<IResetPasswordTokenHelper, ResetPasswordTokenHelper>();
+            services.AddScoped<ICacheHelper, CacheHelper>();
         }
     }
 }
