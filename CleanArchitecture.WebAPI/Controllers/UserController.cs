@@ -3,6 +3,7 @@ using CleanArchitecture.Application.Features.UserFeatures.Command.UpdateUser;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetAll;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetById;
 using CleanArchitecture.Application.Features.UserFeatures.Query.GetByUsername;
+using CleanArchitecture.Application.Helper.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +15,26 @@ namespace CleanArchitecture.WebAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ICacheHelper _cacheHelper;
 
-        public UserController(IMediator mediator)
+        public UserController(IMediator mediator, ICacheHelper cacheHelper)
         {
             _mediator = mediator;
+            _cacheHelper = cacheHelper;
         }
 
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<GetAllUserResponse>> GetAll(CancellationToken cancellationToken)
         {
+            var cacheData = _cacheHelper.GetData<IEnumerable<GetAllUserResponse>>("users");
+            if (cacheData != null && cacheData.Count() > 0)
+            {
+                return Ok(cacheData);
+            }
             var result = await _mediator.Send(new GetAllUserRequest(), cancellationToken);
+            var expireTime = DateTime.Now.AddMinutes(1);
+            _cacheHelper.SetData<IEnumerable<GetAllUserResponse>>("users", result, expireTime);
             return Ok(result);
         }
         [Authorize]
