@@ -11,6 +11,7 @@ namespace DigitalMart.Persistence.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,6 +20,7 @@ namespace DigitalMart.Persistence.Context
             modelBuilder.Entity<Role>().ToTable("roles");
             modelBuilder.Entity<Permission>().ToTable("permissions");
             modelBuilder.Entity<RolePermission>().ToTable("role_permissions");
+            modelBuilder.Entity<Product>().ToTable("products");
 
             modelBuilder.Entity<RolePermission>()
             .HasKey(rp => new { rp.role_id, rp.permission_id });
@@ -34,7 +36,7 @@ namespace DigitalMart.Persistence.Context
                 .HasForeignKey(rp => rp.permission_id);
 
             // Daftar entitas yang ingin dikonfigurasi
-            var entities = new[] { typeof(User)};
+            var entities = new[] { typeof(User), typeof(Product)};
             foreach (var entity in entities)
             {
                 modelBuilder.Entity(entity)
