@@ -17,7 +17,7 @@ namespace DigitalMart.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.31")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -128,6 +128,12 @@ namespace DigitalMart.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTimeOffset?>("password_reset_expires")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("password_reset_token")
+                        .HasColumnType("text");
+
                     b.Property<string>("password_salt")
                         .IsRequired()
                         .HasColumnType("text");
@@ -136,11 +142,26 @@ namespace DigitalMart.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("refresh_token")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("refresh_token_created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("refresh_token_expires")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("role_id")
                         .HasColumnType("integer");
 
                     b.Property<string>("username")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("verify_date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("verify_token")
                         .HasColumnType("text");
 
                     b.HasKey("id");
