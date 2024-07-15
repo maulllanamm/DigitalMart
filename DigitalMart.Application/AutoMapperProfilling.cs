@@ -38,6 +38,10 @@ namespace DigitalMart.Application
             
             CreateMap<GetAllProductRequest, Product>();
             CreateMap<Product, GetAllProductResponse>();            
+            
+            CreateMap<GetByIdProductRequest, Product>();
+            CreateMap<Product, GetByIdProductResponse>();            
+            
 
             
             CreateMap<CreateProductRequest, Product>();

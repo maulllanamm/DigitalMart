@@ -35,6 +35,12 @@ namespace DigitalMart.WebAPI.Controllers
             _cacheHelper.SetData<IEnumerable<GetAllProductResponse>>("users", result, expireTime);
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<ActionResult<GetByIdProductResponse>> GetById(int id, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new GetByIdProductRequest(id), cancellationToken);
+            return Ok(result);
+        }
 
       
         [HttpPost]
