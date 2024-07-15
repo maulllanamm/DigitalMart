@@ -41,7 +41,13 @@ namespace DigitalMart.WebAPI.Controllers
             var result = await _mediator.Send(new GetByIdProductRequest(id), cancellationToken);
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<ActionResult<List<GetByCategoryResponse>>> GetByCategory(string category, CancellationToken cancellationToken)
+        {
 
+            var result = await _mediator.Send(new GetByCategoryRequest(category), cancellationToken);
+            return Ok(result);
+        }
       
         [HttpPost]
         public async Task<ActionResult<CreateProductResponse>> Create(CreateProductRequest request,

@@ -42,7 +42,8 @@ namespace DigitalMart.Application
             CreateMap<GetByIdProductRequest, Product>();
             CreateMap<Product, GetByIdProductResponse>();            
             
-
+            CreateMap<GetByCategoryRequest, Product>();
+            CreateMap<Product, GetByCategoryResponse>();
             
             CreateMap<CreateProductRequest, Product>();
             CreateMap<Product, CreateProductResponse>();
