@@ -26,18 +26,19 @@ namespace CleanArchitecture.Persistence.Repositories
             var items = await _context.Set<TEntity>()
                                       .Skip((page - 1) * (int)pageResult)
                                       .Take((int)pageResult)
+                                      .Where(x => x.is_deleted == false)
                                       .ToListAsync();
             return items;
         }
 
         public async Task<List<TEntity>> GetAll()
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            return await _context.Set<TEntity>().Where(x => x.is_deleted == false).ToListAsync();
         }
 
         public async Task<List<TEntity>> GetByListId(List<int> listId)
         {
-            return await _context.Set<TEntity>().Where(e => listId.Contains(e.id)).ToListAsync();
+            return await _context.Set<TEntity>().Where(e => listId.Contains(e.id) && e.is_deleted == false).ToListAsync();
         }
 
         public async Task<List<TEntity>> GetByListProperty(string field, string[] values)
@@ -50,7 +51,7 @@ namespace CleanArchitecture.Persistence.Repositories
             query = query.Where(e => values.Contains(EF.Property<string>(e, field)));
 
             // Eksekusi query dan ambil hasilnya
-            List<TEntity> result = await query.ToListAsync();
+            List<TEntity> result = await query.Where(x => x.is_deleted == false).ToListAsync();
 
             return result;
         }
@@ -58,7 +59,7 @@ namespace CleanArchitecture.Persistence.Repositories
 
         public async Task<TEntity> GetById(int id)
         {
-            return _context.Set<TEntity>().FirstOrDefault(e => e.id == id);
+            return _context.Set<TEntity>().FirstOrDefault(e => e.id == id && e.is_deleted == false);
         }
 
         public async Task<TEntity> Create(TEntity entity)
@@ -143,7 +144,7 @@ namespace CleanArchitecture.Persistence.Repositories
             {
                 try
                 {
-                    var editedEntity = _context.Set<TEntity>().FirstOrDefault(e => e.id == entity.id);
+                    var editedEntity = _context.Set<TEntity>().FirstOrDefault(e => e.id == entity.id && e.is_deleted == false);
 
                     if (editedEntity != null)
                     {
@@ -189,7 +190,7 @@ namespace CleanArchitecture.Persistence.Repositories
 
         public async Task<bool> Delete(int id)
         {
-            var entityToDelete = _context.Set<TEntity>().FirstOrDefault(e => e.id == id);
+            var entityToDelete = _context.Set<TEntity>().FirstOrDefault(e => e.id == id && e.is_deleted == false);
             if (entityToDelete != null)
             {
                 using (var unitOfWork = new UnitOfWork(_context))
@@ -238,7 +239,7 @@ namespace CleanArchitecture.Persistence.Repositories
 
         public async Task<int> SoftDelete(int id)
         {
-            var entityToDelete = _context.Set<TEntity>().FirstOrDefault(e => e.id == id);
+            var entityToDelete = _context.Set<TEntity>().FirstOrDefault(e => e.id == id && e.is_deleted == false);
             if (entityToDelete != null)
             {
                 using (var unitOfWork = new UnitOfWork(_context))
@@ -263,7 +264,7 @@ namespace CleanArchitecture.Persistence.Repositories
 
         public async Task<int> SoftDeleteBulk(List<int> entitiesId)
         {
-            var entitiesToDelete = _context.Set<TEntity>().Where(x => entitiesId.Contains(x.id)).ToList();
+            var entitiesToDelete = _context.Set<TEntity>().Where(x => entitiesId.Contains(x.id) && x.is_deleted == false).ToList();
             if (entitiesToDelete != null)
             {
                 using (var unitOfWork = new UnitOfWork(_context))
