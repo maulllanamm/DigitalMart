@@ -1,4 +1,5 @@
 using DigitalMart.Application.Features.ProductFeatures.Command.CreateProduct;
+using DigitalMart.Application.Features.ProductFeatures.Command.DeleteProduct;
 using DigitalMart.Application.Features.UserFeatures.Command.UpdateProduct;
 using DigitalMart.Application.Features.UserFeatures.Query.GetAll;
 using DigitalMart.Application.Features.UserFeatures.Query.GetByCategory;
@@ -59,10 +60,18 @@ namespace DigitalMart.WebAPI.Controllers
         }
         
         [HttpPut]
-        public async Task<ActionResult<UpdateProductResponse>> Create(UpdateProductRequest request,
+        public async Task<ActionResult<UpdateProductResponse>> Update(UpdateProductRequest request,
             CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(request, cancellationToken);
+            return Ok(result);
+        }
+        
+        [HttpDelete]
+        public async Task<ActionResult<DeleteProductRequest>> Delete(int id,
+            CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new DeleteProductRequest(id), cancellationToken);
             return Ok(result);
         }
     }

@@ -9,5 +9,6 @@ namespace DigitalMart.Application.Repositories
         public Task<List<Product>> GetByCategory(string category);
         public Task<Product> Create(Product product);
         public Task<Product> Update(Product product);
+        public Task<bool> Delete(int productId);
     }
 }
