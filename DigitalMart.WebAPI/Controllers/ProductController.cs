@@ -1,4 +1,5 @@
 using DigitalMart.Application.Features.ProductFeatures.Command.CreateProduct;
+using DigitalMart.Application.Features.UserFeatures.Command.UpdateProduct;
 using DigitalMart.Application.Features.UserFeatures.Query.GetAll;
 using DigitalMart.Application.Features.UserFeatures.Query.GetByCategory;
 using DigitalMart.Application.Features.UserFeatures.Query.GetById;
@@ -52,6 +53,14 @@ namespace DigitalMart.WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<CreateProductResponse>> Create(CreateProductRequest request,
            CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(request, cancellationToken);
+            return Ok(result);
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult<UpdateProductResponse>> Create(UpdateProductRequest request,
+            CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(request, cancellationToken);
             return Ok(result);

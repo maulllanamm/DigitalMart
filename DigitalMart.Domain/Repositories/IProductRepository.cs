@@ -8,5 +8,6 @@ namespace DigitalMart.Application.Repositories
         public Task<Product> GetById(int id);
         public Task<List<Product>> GetByCategory(string category);
         public Task<Product> Create(Product product);
+        public Task<Product> Update(Product product);
     }
 }

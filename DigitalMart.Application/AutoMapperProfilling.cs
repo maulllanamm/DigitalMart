@@ -2,6 +2,7 @@
 using DigitalMart.Application.Features.AuthFeatures.LoginFeatures;
 using DigitalMart.Application.Features.AuthFeatures.RegisterFeatures;
 using DigitalMart.Application.Features.ProductFeatures.Command.CreateProduct;
+using DigitalMart.Application.Features.UserFeatures.Command.UpdateProduct;
 using DigitalMart.Application.Features.UserFeatures.Command.UpdateUser;
 using DigitalMart.Application.Features.UserFeatures.Query.GetAll;
 using DigitalMart.Application.Features.UserFeatures.Query.GetByCategory;
@@ -46,7 +47,10 @@ namespace DigitalMart.Application
             CreateMap<Product, GetByCategoryResponse>();
             
             CreateMap<CreateProductRequest, Product>();
-            CreateMap<Product, CreateProductResponse>();
+            CreateMap<Product, CreateProductResponse>();            
+            
+            CreateMap<UpdateProductRequest, Product>();
+            CreateMap<Product, UpdateProductResponse>();
         }
     }
 }
